@@ -11,17 +11,6 @@
             width: 100%;
             height: 600px;
         }
-
-        .tag {
-            display: inline-block;
-            background-color: #f0f0f0;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            padding: 2px 8px;
-            margin-right: 5px;
-            font-size: 14px;
-        }
-
     </style>
 
 {% endblock %}
@@ -52,7 +41,7 @@
                                 <span class="tag">{{ tag.name }}</span>
                             {% endfor %}
                         </td>
-                        <td>{{ item.collection.user }}</td>
+                        <td>{{ item.collection.user.email }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
