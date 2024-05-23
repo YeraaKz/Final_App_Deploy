@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Item Details{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header">
+                <h2>{{ item.name }}</h2>
+            </div>
+            <div class="card-body">
+                <h3>Description:</h3>
+                <p>{{ description|raw }}</p>
+                {% for custom_attribute in item.attributes %}
+                    <div>
+                        <h4>{{ custom_attribute.attribute.name }}:</h4>
+                        <p>{{ custom_attribute.value }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h3>Comments:</h3>
+            </div>
+            <div class="card-body">
+                <div id="comments" class="comments mb-3">
+                    {% for comment in item.comments %}
+                        <div class="comment py-2 px-3 my-2 border rounded bg-light">
+                            <strong>{{ comment.user.email }}</strong> <small class="text-muted">{{ comment.createdAt|date('Y-m-d H:i:s') }}</small>
+                            <p>{{ comment.content }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                {{ form_start(form) }}
+                <div class="card-body">
+                    <form id="comment-form" class="mb-3">
+                        <div class="form-group">
+                            {{ form_widget(form) }}
+                            <button type="submit" class="btn btn-primary">Comment</button>
+                        </div>
+                    </form>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const itemId = {{ item.id }};
+            const url = `/api/items/${itemId}/comments`;
+
+            function fetchComments() {
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        updateComments(data);
+                    })
+                    .catch(error => console.error('Failed to fetch comments:', error));
+            }
+
+            function updateComments(comments) {
+                const commentsContainer = document.getElementById('comments');
+                commentsContainer.innerHTML = ''; // Очистка текущих комментариев
+
+                comments.forEach(comment => {
+                    const commentElement = document.createElement('div');
+                    commentElement.className = 'comment';
+                    commentElement.innerHTML = `
+                <div class="comment py-2 px-3 my-2 border rounded bg-light">
+                            <strong>${comment.author}</strong> <small class="text-muted">${comment.createdAt}</small>
+                            <p>${comment.content }</p>
+                        </div>
+            `;
+                    commentsContainer.appendChild(commentElement);
+                });
+            }
+
+            setInterval(fetchComments, 5000);
+        });
+    </script>
+
+{% endblock %}

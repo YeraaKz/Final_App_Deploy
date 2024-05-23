@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% for item in items %}
+        <div>{{ item.name }}</div>
+    {% endfor %}
+{% endblock %}
+
+{% block title %}
+{% endblock %}
+
