@@ -93,6 +93,28 @@ class ItemsCollection
         $this->customItemAttributes = $customItemAttributes;
     }
 
+    public function addCustomItemAttribute(CustomItemAttribute $customItemAttribute): static
+    {
+        if(!$this->customItemAttributes->contains($customItemAttribute)){
+            $this->customItemAttributes->add($customItemAttribute);
+            $customItemAttribute->setItemCollection($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCustomItemAttribute(CustomItemAttribute $customItemAttribute)
+    {
+        if($this->customItemAttributes->removeElement($customItemAttribute)){
+            if($customItemAttribute->getItemCollection() === $this){
+                $customItemAttribute->setItemCollection(null);
+            }
+
+        }
+
+        return $this;
+    }
+
     public function getItems(): Collection
     {
         return $this->items;
@@ -101,6 +123,28 @@ class ItemsCollection
     public function setItems(Collection $items): void
     {
         $this->items = $items;
+    }
+
+    public function addItem(Item $item): self
+    {
+        if (!$this->items->contains($item)) {
+            $this->items[] = $item;
+            $item->setCollection($this);
+        }
+
+        return $this;
+    }
+
+    public function removeItem(Item $item): self
+    {
+        if ($this->items->removeElement($item)) {
+            // set the owning side to null (unless already changed)
+            if ($item->getCollection() === $this) {
+                $item->setCollection(null);
+            }
+        }
+
+        return $this;
     }
 
     public function getUser(): ?User
@@ -112,4 +156,5 @@ class ItemsCollection
     {
         $this->user = $user;
     }
+
 }

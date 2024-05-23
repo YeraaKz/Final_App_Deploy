@@ -6,6 +6,7 @@ use App\Entity\Item;
 use App\Entity\ItemsCollection;
 use App\Form\ItemsCollectionType;
 use App\Form\ItemType;
+use App\Service\ItemService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

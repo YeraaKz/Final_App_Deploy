@@ -16,28 +16,14 @@ class ItemsCollectionRepository extends ServiceEntityRepository
         parent::__construct($registry, ItemsCollection::class);
     }
 
-    //    /**
-    //     * @return ItemsCollection[] Returns an array of ItemsCollection objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('i')
-    //            ->andWhere('i.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('i.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?ItemsCollection
-    //    {
-    //        return $this->createQueryBuilder('i')
-    //            ->andWhere('i.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findBiggestCollections(int $limit): array
+    {
+        return $this->createQueryBuilder('c')
+            ->leftJoin('c.items', 'i')
+            ->groupBy('c.id')
+            ->orderBy('COUNT(i)', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
 }

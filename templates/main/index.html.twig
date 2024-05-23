@@ -1,20 +1,135 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MainController!{% endblock %}
+{% block title %}Tag Cloud{% endblock %}
+
+{% block stylesheets %}
+
+    {{ parent() }}
+
+    <style>
+        #chartdiv {
+            width: 100%;
+            height: 600px;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 2px 8px;
+            margin-right: 5px;
+            font-size: 14px;
+        }
+
+    </style>
+
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Recent items</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Collection</th>
+                    <th>Tags</th>
+                    <th>User</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.collection.name }}</td>
+                        <td>
+                            {% for tag in item.tags %}
+                                <span class="tag">{{ tag.name }}</span>
+                            {% endfor %}
+                        </td>
+                        <td>{{ item.collection.user }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/Yernar/Desktop/Itransition_Final_Project/Final_App_Deploy/src/Controller/MainController.php</code></li>
-        <li>Your template at <code>C:/Users/Yernar/Desktop/Itransition_Final_Project/Final_App_Deploy/templates/main/index.html.twig</code></li>
-    </ul>
-</div>
+        <h2 class="text-center mt-5 mb-4">The 5 largest collections</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Items Count</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for collection in collections %}
+                    <tr>
+                        <td>{{ collection.id }}</td>
+                        <td>{{ collection.name }}</td>
+                        <td>{{ collection.description }}</td>
+                        <td>{{ collection.items|length }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <h2 class="text-center mt-5 mb-4">Most popular tags</h2>
+        <div id="chartdiv" class="mb-5"></div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            createChart({{ tags|json_encode|raw }})
+        });
+
+        function createChart(data) {
+            am4core.ready(function() {
+                am4core.useTheme(am4themes_animated);
+
+                var chart = am4core.create("chartdiv", am4plugins_wordCloud.WordCloud);
+
+                var series = chart.series.push(new am4plugins_wordCloud.WordCloudSeries());
+                series.randomness = 0.1;
+                series.rotationThreshold = 0.5;
+
+                series.data = data;
+
+                series.dataFields.word = "name";
+                series.dataFields.id = "id";
+
+                series.heatRules.push({
+                    target: series.labels.template,
+                    property: "fill",
+                    min: am4core.color("#0000CC"),
+                    max: am4core.color("#CC00CC"),
+                    dataField: "value"
+                });
+
+                series.labels.template.url = "items?tag_id={id}";
+
+                var hoverState = series.labels.template.states.create("hover");
+                hoverState.properties.fill = am4core.color("#FF0000");
+
+                var subtitle = chart.titles.create();
+
+                var title = chart.titles.create();
+
+            });
+        }
+
+    </script>
 {% endblock %}
