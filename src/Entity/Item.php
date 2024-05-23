@@ -43,7 +43,7 @@ class Item
     #[ORM\JoinTable(name: 'item_tag')]
     private Collection $tags;
 
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'item')]
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'item', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $comments;
 
     #[ORM\Column(name: 'created_at', type: 'datetime')]

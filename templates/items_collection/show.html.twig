@@ -1,26 +1,29 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">Name</th>
-            {% for custom_attribute in collection.customItemAttributes %}
-                <th scope="col">{{ custom_attribute.name }}</th>
-            {% endfor %}
-        </tr>
-        </thead>
-        <tbody>
-        {% for item in items %}
+    <div class="container mt-4">
+        <h1>{{ collection.name }} Items</h1>
+        <table class="table table-bordered">
+            <thead>
             <tr>
-                <td><a href="{{ path('app_item', {id: item.id}) }}">{{ item.name }}</a></td>
-                {% for attribute in item.attributes %}
-                    <td> {{ attribute.value }}</td>
+                <th scope="col">Name</th>
+                {% for custom_attribute in collection.customItemAttributes %}
+                    <th scope="col">{{ custom_attribute.name }}</th>
                 {% endfor %}
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for item in items %}
+                <tr>
+                    <td><a href="{{ path('app_item', {id: item.id}) }}">{{ item.name }}</a></td>
+                    {% for attribute in item.attributes %}
+                        <td> {{ attribute.value }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
 
 {% block title %}

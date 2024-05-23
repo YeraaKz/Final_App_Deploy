@@ -41,6 +41,38 @@ class ItemsCollectionController extends AbstractController
         ]);
     }
 
+    #[Route('/collections/{id}/edit', name: 'app_collection_edit', methods: [Request::METHOD_GET, Request::METHOD_POST])]
+    public function edit(Request $request, EntityManagerInterface $entityManager, ItemsCollection $collection): Response
+    {
+        $form = $this->createForm(ItemsCollectionType::class, $collection);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Collection successfully updated.');
+            return $this->redirectToRoute('app_user_collections', ['id' => $this->getUser()->getId()]);
+        }
+
+        return $this->render('items_collection/form.html.twig', [
+            'form' => $form->createView(),
+            'action' => 'Edit',
+        ]);
+    }
+
+    #[Route('/collections/{id}/delete', name: 'app_collection_delete', methods: [Request::METHOD_POST])]
+    public function delete(Request $request, EntityManagerInterface $entityManager, ItemsCollection $collection): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $collection->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($collection);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Collection successfully deleted.');
+        }
+
+        return $this->redirectToRoute('app_user_collections', ['id' => $this->getUser()->getId()]);
+    }
+
     #[Route('/collections/{id}', name: 'app_collection', methods: [Request::METHOD_GET])]
     public function show(EntityManagerInterface $entityManager, ItemsCollection $collection, int $id): Response
     {

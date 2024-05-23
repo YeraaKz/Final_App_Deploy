@@ -41,7 +41,7 @@ class ItemsCollection
     #[Assert\Valid()]
     private Collection $customItemAttributes;
 
-    #[ORM\OneToMany(targetEntity: Item::class, mappedBy: 'collection', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: Item::class, mappedBy: 'collection', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $items;
 
     #[ORM\ManyToOne(inversedBy: 'collections')]

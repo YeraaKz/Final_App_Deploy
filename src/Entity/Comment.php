@@ -22,7 +22,7 @@ class Comment
     private User $user;
 
     #[ORM\ManyToOne(targetEntity: Item::class, inversedBy: 'comments')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private Item $item;
 
     #[ORM\Column(type: 'datetime')]
