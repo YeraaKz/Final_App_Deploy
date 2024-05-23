@@ -29,6 +29,7 @@ class ItemController extends AbstractController
         }
 
         return $this->render('item/index.html.twig', [
+            'tag' => $tag,
             'items' => $items
         ]);
 
