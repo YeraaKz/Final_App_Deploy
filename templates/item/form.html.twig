@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add Item{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        $(document).ready(function() {
+            $('#item_tags').on('input', function() {
+                var input = $(this).val().trim();
+
+                if (input.length === 0) {
+                    $('#tag-list').empty();
+                    return;
+                }
+
+                var lastWord = input.split(' ').pop();
+                if (lastWord.length > 1) {
+                    $.getJSON('/tags', { query: lastWord }, function(data) {
+                        $('#tag-list').empty();
+                        $.each(data, function(i, tag) {
+                            var tagElement = $('<div>').text(tag.name);
+                            $('#tag-list').append(tagElement);
+                        });
+                    });
+                } else {
+                    $('#tag-list').empty();
+                }
+            }).on('keydown', function(e) {
+                var $selected = $('#tag-list div.selected');
+                var $divs = $('#tag-list div');
+
+                if (e.keyCode == 40) { // Key Down
+                    if ($selected.length === 0 || $selected.is($divs.last())) {
+                        $divs.removeClass('selected');
+                        $divs.first().addClass('selected');
+                    } else {
+                        $selected.removeClass('selected').next().addClass('selected');
+                    }
+                    return false;
+                }
+
+                if (e.keyCode == 38) { // Key Up
+                    if ($selected.length === 0 || $selected.is($divs.first())) {
+                        $divs.removeClass('selected');
+                        $divs.last().addClass('selected');
+                    } else {
+                        $selected.removeClass('selected').prev().addClass('selected');
+                    }
+                    return false;
+                }
+
+                if (e.keyCode == 13) { // Enter
+                    e.preventDefault()
+                    if ($selected.length > 0) {
+                        var fullText = $('#item_tags').val();
+                        var newText = fullText.substring(0, fullText.lastIndexOf(' ') + 1) + $selected.text() + ' ';
+                        $('#item_tags').val(newText);
+                        $('#tag-list').empty();
+                        return false;
+                    }
+                }
+            });
+
+            $('#tag-list').on('click', 'div', function() {
+                var fullText = $('#item_tags').val();
+                var newText = fullText.substring(0, fullText.lastIndexOf(' ') + 1) + $(this).text() + ' ';
+                $('#item_tags').val(newText);
+                $('#tag-list').empty();
+            });
+        });
+    </script>
+
+
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Add New Item</h1>
+
+        {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': true}}) }}
+
+        <div class="mb-3">
+            {{ form_row(form.name) }}
+        </div>
+        <div class="mb-3">
+            {{ form_row(form.description) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_row(form.tags, {'attr': {'id' : 'item_tags'}}) }}
+            <div id="tag-list"></div>
+        </div>
+
+        {% for attribute in form %}
+            {% if attribute.vars.name starts with 'custom_' %}
+                <div class="mb-3">
+                    {{ dump(attribute) }}
+                    {{ form_row(attribute) }}
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        {{ form_rest(form) }}
+        {{ form_errors(form) }}
+        <button type="submit" class="btn btn-success">Add</button>
+
+        {{ form_end(form) }}
+    </div>
+
+
+    {% block stylesheets %}
+        {{ parent() }}
+        <style>
+            #tag-list {
+
+                border: 1px solid #ccc;
+                border-top: none;
+                list-style: none;
+
+            }
+
+            #tag-list div {
+                padding: 8px 10px;
+                cursor: pointer;
+                border-bottom: 1px solid #ccc;
+            }
+
+            #tag-list div:hover {
+                background-color: #f0f0f0;
+            }
+
+            .selected{
+                background-color: #f0f0f0;
+
+            }
+        </style>
+    {% endblock %}
+
+{% endblock %}

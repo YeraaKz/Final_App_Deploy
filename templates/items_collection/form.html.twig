@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create Collection{% endblock %}
+
+{% block body  %}
+    <div class="container mt-5">
+        <h1 class="mb-4">{{ action|capitalize }} Collection</h1>
+
+        {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': true}}) }}
+        <div class="mb-3">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.name, {'attr': {'class': 'form-text text-danger'}}) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.description) }}
+            {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.description, {'attr': {'class': 'form-text text-danger'}}) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.category) }}
+            {{ form_widget(form.category, {'attr': {'class': 'form-select'}}) }}
+            {{ form_errors(form.category, {'attr': {'class': 'form-text text-danger'}}) }}
+        </div>
+
+        <label>Custom Attributes</label>
+
+        <div
+                id="custom-attributes-wrapper"
+                data-index="{{ form.customItemAttributes|length > 0 ? form.customItemAttributes|last.vars.name + 1 : 0 }}"
+                data-prototype="{{  form_widget(form.customItemAttributes.vars.prototype)|e('html_attr') }}"
+        >
+            {% for customAttribute in form.customItemAttributes %}
+                <div class="item">
+                    {{ form_row(customAttribute) }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <a id="add-custom-attribute" class="btn btn-outline-secondary mb-3" href="#">Add Attribute</a>
+        {{ form_rest(form) }}
+        <button type="submit" class="btn btn-primary">{{ action|capitalize }}</button>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}
