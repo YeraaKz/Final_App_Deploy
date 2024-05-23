@@ -26,4 +26,13 @@ class ItemsCollectionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findByUserId(int $userId): array
+    {
+        return $this->createQueryBuilder('ic')
+            ->where('ic.user = :userId')
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->getResult();
+    }
 }
