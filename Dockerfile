@@ -2,8 +2,6 @@ FROM webdevops/php-nginx:8.2-alpine
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-RUN docker-php-ext-install libpq-dev pdo_pgsql pgsql mbstring exif pcntl bcmath gd
-
 WORKDIR /app
 COPY . /app
 
