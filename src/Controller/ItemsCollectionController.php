@@ -74,9 +74,15 @@ class ItemsCollectionController extends AbstractController
     }
 
     #[Route('/collections/{id}', name: 'app_collection', methods: [Request::METHOD_GET])]
-    public function show(EntityManagerInterface $entityManager, ItemsCollection $collection, int $id): Response
+    public function show(Request $request, EntityManagerInterface $entityManager, ItemsCollection $collection, int $id): Response
     {
-        $items = $collection->getItems();
+//        $items = $collection->getItems();
+
+        $sortField = $request->query->get('sort', 'name');
+        $sortOrder = $request->query->get('order', 'asc');
+
+        $items = $entityManager->getRepository(Item::class)->findByCollection($collection, $sortField, $sortOrder);
+
         return $this->render('items_collection/show.html.twig', [
             'collection' => $collection,
             'items' => $items,

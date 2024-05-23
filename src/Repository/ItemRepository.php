@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Item;
+use App\Entity\ItemsCollection;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -24,4 +25,16 @@ class ItemRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findByCollection(ItemsCollection $collection, $sortField = 'name', $sortOrder = 'asc'): array
+    {
+        return $this->createQueryBuilder('i')
+            ->where('i.collection = :collection')
+            ->setParameter('collection', $collection)
+            ->orderBy('i.' . $sortField, $sortOrder)
+            ->getQuery()
+            ->getResult();
+
+    }
+
 }

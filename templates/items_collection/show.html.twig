@@ -2,7 +2,28 @@
 
 {% block body %}
     <div class="container mt-4">
-        <h1>{{ collection.name }} Items</h1>
+        <h1>{{ collection.name }} collection</h1>
+
+        <form method="get" class="mb-3">
+            <div class="form-row">
+                <div class="col">
+                    <select name="sort" class="form-control">
+                        <option value="name" {% if app.request.query.get('sort') == 'name' %}selected{% endif %}>Name</option>
+                        <option value="createdAt" {% if app.request.query.get('sort') == 'createdAt' %}selected{% endif %}>Date Created</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <select name="order" class="form-control">
+                        <option value="asc" {% if app.request.query.get('order') == 'asc' %}selected{% endif %}>Ascending</option>
+                        <option value="desc" {% if app.request.query.get('order') == 'desc' %}selected{% endif %}>Descending</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-primary">Apply</button>
+                </div>
+            </div>
+        </form>
+
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -10,6 +31,8 @@
                 {% for custom_attribute in collection.customItemAttributes %}
                     <th scope="col">{{ custom_attribute.name }}</th>
                 {% endfor %}
+                <th scope="col">Tags</th>
+                <th scope="col">Created At</th>
             </tr>
             </thead>
             <tbody>
@@ -19,6 +42,12 @@
                     {% for attribute in item.attributes %}
                         <td> {{ attribute.value }}</td>
                     {% endfor %}
+                    <td>
+                        {% for tag in item.tags %}
+                            <span class="tag">{{ tag.name }}</span>
+                        {% endfor %}
+                    </td>
+                    <td>{{ item.createdAt.format('d/m/Y') }}</td>
                 </tr>
             {% endfor %}
             </tbody>
