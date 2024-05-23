@@ -1,8 +1,20 @@
 FROM webdevops/php-nginx:8.2-alpine
 
+RUN apt-get update && apt-get install -y \
+        nginx \
+        git \
+        unzip \
+        libpng-dev \
+        libonig-dev \
+        libpq-dev \
+        libxml2-dev \
+        zip \
+        curl \
+        && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-RUN docker-php-ext-install pdo_pgsql pgsql mbstring exif pcntl bcmath gd
+RUN docker-php-ext-install libpq-dev pdo_pgsql pgsql mbstring exif pcntl bcmath gd
 
 WORKDIR /app
 COPY . /app
