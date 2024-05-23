@@ -10,13 +10,19 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class ItemsCollectionVoter extends Voter
 {
-    public const EDIT = 'POST_EDIT';
+    public const EDIT = 'edit';
 
     protected function supports(string $attribute, mixed $subject): bool
     {
+        if (!in_array($attribute, [self::EDIT])) {
+            return false;
+        }
 
-        return in_array($attribute, [self::EDIT])
-            && $subject instanceof ItemsCollection;
+        if (!$subject instanceof ItemsCollection) {
+            return false;
+        }
+
+        return true;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool

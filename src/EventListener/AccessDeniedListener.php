@@ -3,6 +3,7 @@
 namespace App\EventListener;
 
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -26,9 +27,9 @@ final class AccessDeniedListener
         if ($exception instanceof AccessDeniedHttpException) {
             $session = $event->getRequest()->getSession();
             $session->getBag('flashes')->add('error' , 'Access denied');
-
             $response = new RedirectResponse($this->router->generate('app_main'));
             $event->setResponse($response);
         }
     }
+
 }
