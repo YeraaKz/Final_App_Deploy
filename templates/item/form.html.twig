@@ -90,18 +90,20 @@
             {{ form_row(form.description) }}
         </div>
 
+        {% for attribute in form %}
+            {% if attribute.vars.name starts with 'custom_' %}
+                <div class="mb-3">
+                    {{ form_widget(attribute) }}
+                </div>
+            {% endif %}
+        {% endfor %}
+
         <div class="mb-3">
             {{ form_row(form.tags, {'attr': {'id' : 'item_tags'}}) }}
             <div id="tag-list"></div>
         </div>
 
-        {% for attribute in form %}
-            {% if attribute.vars.name starts with 'custom_' %}
-                <div class="mb-3">
-                    {{ form_row(attribute) }}
-                </div>
-            {% endif %}
-        {% endfor %}
+
 
         {{ form_rest(form) }}
         {{ form_errors(form) }}

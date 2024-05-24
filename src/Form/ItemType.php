@@ -42,7 +42,7 @@ class ItemType extends AbstractType
                     $this->getFieldType($attribute->getType()->value),
                     [
                     'label' => $attribute->getName(),
-                        'attr' => ['class' => $attribute->getType()->value === CustomItemAttributeDatatype::Boolean->value ? 'form-check-input' : 'form-control mb-3'],
+                        'attr' => ['class' => $attribute->getType()->value === CustomItemAttributeDatatype::Boolean->value ? '' : 'form-control mb-3'],
                     'mapped' => false,
                     'required' => false
                     ]
