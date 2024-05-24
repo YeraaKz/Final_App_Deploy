@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Item;
+use App\Entity\Like;
 use App\Entity\Tag;
 use App\Form\CommentType;
 use App\Util\MarkdownParser;
@@ -65,6 +66,32 @@ class ItemController extends AbstractController
             'comments' => $item->getComments(),
             'form' => $form->createView(),
 
+        ]);
+    }
+
+    #[Route('/api/items/{id}/like', name: 'app_item_like', methods: [Request::METHOD_POST])]
+    public function likeItem(Item $item, EntityManagerInterface $entityManager)
+    {
+        $user = $this->getUser();
+
+        $existingLike = $entityManager->getRepository(Like::class)->findByUserAndItem($user, $item);
+
+        if ($existingLike) {
+            $entityManager->remove($existingLike);
+            $entityManager->flush();
+
+            return new JsonResponse(['liked' => false]);
+        }
+
+        $like = new Like();
+        $like->setUser($user);
+        $like->setItem($item);
+
+        $entityManager->persist($like);
+        $entityManager->flush();
+
+        return $this->json([
+            'liked' => true,
         ]);
     }
 

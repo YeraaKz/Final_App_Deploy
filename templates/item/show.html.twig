@@ -18,6 +18,11 @@
                     </div>
                 {% endfor %}
             </div>
+            <button id="like-button" class="btn btn-primary">
+                {{ item.isLikedByUser(app.user) ? 'Unlike' : 'Like' }}
+            </button>
+
+            <div id="like-count">{{ item.likes|length }} Likes</div>
         </div>
 
 
@@ -54,10 +59,28 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const itemId = {{ item.id }};
-            const url = `/api/items/${itemId}/comments`;
+            const likeButton = document.getElementById('like-button');
+            const likeCount = document.getElementById('like-count');
+
+            likeButton.addEventListener('click', function() {
+                fetch(`/api/items/${itemId}/like`, {
+                    method: 'POST'
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.liked) {
+                            likeButton.textContent = 'Unlike';
+                            likeCount.textContent = parseInt(likeCount.textContent) + 1 + ' Likes';
+                        } else {
+                            likeButton.textContent = 'Like';
+                            likeCount.textContent = parseInt(likeCount.textContent) - 1 + ' Likes';
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
 
             function fetchComments() {
-                fetch(url)
+                fetch(`/api/items/${itemId}/comments`)
                     .then(response => response.json())
                     .then(data => {
                         updateComments(data);

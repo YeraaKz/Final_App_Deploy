@@ -18,6 +18,7 @@ class Item
         $this->attributes = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->likes= new ArrayCollection();
     }
 
     #[ORM\Id]
@@ -45,6 +46,9 @@ class Item
 
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'item', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $comments;
+
+    #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'item', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $likes;
 
     #[ORM\Column(name: 'created_at', type: 'datetime')]
     private ?DateTime $createdAt = null;
@@ -140,5 +144,47 @@ class Item
     public function setComments(Collection $comments): void
     {
         $this->comments = $comments;
+    }
+
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function setLikes(Collection $likes): void
+    {
+        $this->likes = $likes;
+    }
+
+    public function addLike(Like $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->setItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(Like $like): self
+    {
+        if ($this->likes->removeElement($like)) {
+            if ($like->getItem() === $this) {
+                $like->setItem(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isLikedByUser(User $user): bool
+    {
+        foreach ($this->likes as $like) {
+            if ($like->getUser() === $user) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
