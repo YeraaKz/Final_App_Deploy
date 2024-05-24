@@ -96,7 +96,6 @@
         {% for attribute in form %}
             {% if attribute.vars.name starts with 'custom_' %}
                 <div class="mb-3">
-                    {{ dump(attribute) }}
                     {{ form_row(attribute) }}
                 </div>
             {% endif %}
