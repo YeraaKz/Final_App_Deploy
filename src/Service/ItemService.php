@@ -51,7 +51,7 @@ class ItemService
                                             ItemsCollection $collection): void
     {
         foreach ($collection->getCustomItemAttributes() as $attribute) {
-            $attributeFormField = $form->get($attribute->getName());
+            $attributeFormField = $form->get(str_replace(' ', '_', $attribute->getName()));
             $attributeValue = new ItemAttributeValue();
             $attributeValue->setAttribute($attribute);
             $attributeValue->setItem($item);

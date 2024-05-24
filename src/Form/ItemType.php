@@ -3,7 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Item;
+use App\Enum\CustomItemAttributeDatatype;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -32,12 +37,16 @@ class ItemType extends AbstractType
         ;
         if (!empty($options['custom_attributes'])) {
             foreach ($options['custom_attributes'] as $attribute) {
-                $builder->add($attribute->getName(), TextType::class, [
+                $builder->add(
+                    str_replace(' ', '_', $attribute->getName()),
+                    $this->getFieldType($attribute->getType()->value),
+                    [
                     'label' => $attribute->getName(),
-                    'attr' => ['class' => 'form-control mb-3'],
+                        'attr' => ['class' => $attribute->getType()->value === CustomItemAttributeDatatype::Boolean->value ? 'form-check-input' : 'form-control mb-3'],
                     'mapped' => false,
                     'required' => false
-                ]);
+                    ]
+                );
             }
         }
 
@@ -49,5 +58,16 @@ class ItemType extends AbstractType
             'data_class' => Item::class,
             'custom_attributes' => []
         ]);
+    }
+
+    private function getFieldType(string $type)
+    {
+        return match ($type) {
+            CustomItemAttributeDatatype::Date->value => DateType::class,
+            CustomItemAttributeDatatype::Integer->value => NumberType::class,
+            CustomItemAttributeDatatype::Text->value => TextareaType::class,
+            CustomItemAttributeDatatype::Boolean->value => CheckboxType::class,
+            default => TextType::class,
+        };
     }
 }

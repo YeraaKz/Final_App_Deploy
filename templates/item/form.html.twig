@@ -7,59 +7,60 @@
 
     <script>
         $(document).ready(function() {
+            var debounceTimer;
             $('#item_tags').on('input', function() {
-                var input = $(this).val().trim();
-
-                if (input.length === 0) {
-                    $('#tag-list').empty();
-                    return;
-                }
-
-                var lastWord = input.split(' ').pop();
-                if (lastWord.length > 1) {
-                    $.getJSON('/tags', { query: lastWord }, function(data) {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => {
+                    var input = $(this).val().trim();
+                    if (input.length === 0) {
                         $('#tag-list').empty();
-                        $.each(data, function(i, tag) {
-                            var tagElement = $('<div>').text(tag.name);
-                            $('#tag-list').append(tagElement);
+                        return;
+                    }
+
+                    var lastWord = input.split(' ').pop();
+                    if (lastWord.length > 1) {
+                        $.getJSON('/tags', { query: lastWord }, function(data) {
+                            $('#tag-list').empty();
+                            $.each(data, function(i, tag) {
+                                var tagElement = $('<div>').text(tag.name);
+                                $('#tag-list').append(tagElement);
+                            });
                         });
-                    });
-                } else {
-                    $('#tag-list').empty();
-                }
-            }).on('keydown', function(e) {
+                    } else {
+                        $('#tag-list').empty();
+                    }
+                }, 300);
+            });
+
+            $('#item_tags').on('keydown', function(e) {
                 var $selected = $('#tag-list div.selected');
                 var $divs = $('#tag-list div');
-
-                if (e.keyCode == 40) { // Key Down
-                    if ($selected.length === 0 || $selected.is($divs.last())) {
-                        $divs.removeClass('selected');
-                        $divs.first().addClass('selected');
-                    } else {
-                        $selected.removeClass('selected').next().addClass('selected');
-                    }
-                    return false;
-                }
-
-                if (e.keyCode == 38) { // Key Up
-                    if ($selected.length === 0 || $selected.is($divs.first())) {
-                        $divs.removeClass('selected');
-                        $divs.last().addClass('selected');
-                    } else {
-                        $selected.removeClass('selected').prev().addClass('selected');
-                    }
-                    return false;
-                }
-
-                if (e.keyCode == 13) { // Enter
-                    e.preventDefault()
-                    if ($selected.length > 0) {
-                        var fullText = $('#item_tags').val();
-                        var newText = fullText.substring(0, fullText.lastIndexOf(' ') + 1) + $selected.text() + ' ';
-                        $('#item_tags').val(newText);
-                        $('#tag-list').empty();
-                        return false;
-                    }
+                switch(e.keyCode) {
+                    case 40: // KEY DOWN
+                        e.preventDefault();
+                        if ($selected.length === 0 || $selected.is($divs.last())) {
+                            $divs.removeClass('selected').first().addClass('selected');
+                        } else {
+                            $selected.removeClass('selected').next().addClass('selected');
+                        }
+                        break;
+                    case 38: // KEY UP
+                        e.preventDefault();
+                        if ($selected.length === 0 || $selected.is($divs.first())) {
+                            $divs.removeClass('selected').last().addClass('selected');
+                        } else {
+                            $selected.removeClass('selected').prev().addClass('selected');
+                        }
+                        break;
+                    case 13: // ENTER
+                        e.preventDefault();
+                        if ($selected.length > 0) {
+                            var fullText = $(this).val();
+                            var newText = fullText.substring(0, fullText.lastIndexOf(' ') + 1) + $selected.text() + ' ';
+                            $(this).val(newText);
+                            $('#tag-list').empty();
+                        }
+                        break;
                 }
             });
 
@@ -70,6 +71,7 @@
                 $('#tag-list').empty();
             });
         });
+
     </script>
 
 

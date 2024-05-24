@@ -33,7 +33,7 @@
                 data-prototype="{{  form_widget(form.customItemAttributes.vars.prototype)|e('html_attr') }}"
         >
             {% for customAttribute in form.customItemAttributes %}
-                <div class="item">
+                <div>
                     {{ form_row(customAttribute) }}
                 </div>
             {% endfor %}

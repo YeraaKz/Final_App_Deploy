@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TagRepository::class)]
 #[ORM\Table(name: '`tags`')]
+#[ORM\Index(name: 'tag_name_index', columns: ['name'])]
 class Tag
 {
     public function __construct()

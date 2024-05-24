@@ -12,6 +12,12 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class MainController extends AbstractController
 {
+
+    #[Route('/test')]
+    public function test()
+    {
+        return $this->render('test.html.twig', ['action' => 'sex']);
+    }
     #[Route('', name: 'app_main')]
     public function index(EntityManagerInterface $entityManager): Response
     {

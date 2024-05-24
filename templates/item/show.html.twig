@@ -4,50 +4,55 @@
 
 {% block body %}
     <div class="container mt-4">
-        <div class="card">
-            <div class="card-header">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
                 <h2>{{ item.name }}</h2>
             </div>
             <div class="card-body">
-                <h3>Description:</h3>
-                <p>{{ description|raw }}</p>
+                <h3 class="font-weight-bold">Description:</h3>
+                <p class="text-muted">{{ description|raw }}</p>
                 {% for custom_attribute in item.attributes %}
-                    <div>
+                    <div class="mb-2">
                         <h4>{{ custom_attribute.attribute.name }}:</h4>
-                        <p>{{ custom_attribute.value }}</p>
+                        <p class="text-secondary">
+                            {% if custom_attribute.attribute.type.value == 'DATE' %}
+                                {{ custom_attribute.getValue()|date('Y-m-d') }}
+                            {% elseif custom_attribute.attribute.type.value == 'BOOL' %}
+                                {{ custom_attribute.getValue() ? 'Yes' : 'No' }}
+                            {% else %}
+                                {{ custom_attribute.getValue() }}
+                            {% endif %}
+                        </p>
                     </div>
                 {% endfor %}
             </div>
-            <button id="like-button" class="btn btn-primary">
-                {{ item.isLikedByUser(app.user) ? 'Unlike' : 'Like' }}
-            </button>
-
-            <div id="like-count">{{ item.likes|length }} Likes</div>
+            <div class="card-footer d-flex justify-content-between align-items-center">
+                <button id="like-button" class="btn">
+                    <i class="fas fa-heart{{ item.isLikedByUser(app.user) ? ' text-danger' : '' }}"></i>
+                </button>
+                <div id="like-count">{{ item.likes|length }} likes</div>
+            </div>
         </div>
 
-
-        <div class="card mt-4">
-            <div class="card-header">
+        <div class="card mt-4 shadow-sm">
+            <div class="card-header bg-secondary text-white">
                 <h3>Comments:</h3>
             </div>
             <div class="card-body">
                 <div id="comments" class="comments mb-3">
                     {% for comment in item.comments %}
                         <div class="comment py-2 px-3 my-2 border rounded bg-light">
-                            <strong>{{ comment.user.email }}</strong> <small class="text-muted">{{ comment.createdAt|date('Y-m-d H:i:s') }}</small>
+                            <strong>{{ comment.user.email }}</strong>
+                            <small class="text-muted">{{ comment.createdAt|date('Y-m-d H:i:s') }}</small>
                             <p>{{ comment.content }}</p>
                         </div>
                     {% endfor %}
                 </div>
 
                 {{ form_start(form) }}
-                <div class="card-body">
-                    <form id="comment-form" class="mb-3">
-                        <div class="form-group">
-                            {{ form_widget(form) }}
-                            <button type="submit" class="btn btn-primary">Comment</button>
-                        </div>
-                    </form>
+                <div class="form-group">
+                    {{ form_widget(form) }}
+                    <button type="submit" class="btn btn-primary">Comment</button>
                 </div>
                 {{ form_end(form) }}
             </div>
@@ -61,31 +66,37 @@
             const itemId = {{ item.id }};
             const likeButton = document.getElementById('like-button');
             const likeCount = document.getElementById('like-count');
+            const heartIcon = likeButton.querySelector('i');
 
-            likeButton.addEventListener('click', function() {
-                fetch(`/api/items/${itemId}/like`, {
-                    method: 'POST'
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.liked) {
-                            likeButton.textContent = 'Unlike';
-                            likeCount.textContent = parseInt(likeCount.textContent) + 1 + ' Likes';
-                        } else {
-                            likeButton.textContent = 'Like';
-                            likeCount.textContent = parseInt(likeCount.textContent) - 1 + ' Likes';
+            likeButton.addEventListener('click', async function() {
+                try {
+                    const response = await fetch(`/api/items/${itemId}/like`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
                         }
-                    })
-                    .catch(error => console.error('Error:', error));
+                    });
+                    const data = await response.json();
+                    if (data.liked) {
+                        heartIcon.classList.add('text-danger');
+                        likeCount.textContent = `${parseInt(likeCount.textContent) + 1} Likes`;
+                    } else {
+                        heartIcon.classList.remove('text-danger');
+                        likeCount.textContent = `${parseInt(likeCount.textContent) - 1} Likes`;
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
             });
 
-            function fetchComments() {
-                fetch(`/api/items/${itemId}/comments`)
-                    .then(response => response.json())
-                    .then(data => {
-                        updateComments(data);
-                    })
-                    .catch(error => console.error('Failed to fetch comments:', error));
+            async function fetchComments() {
+                try {
+                    const response = await fetch(`/api/items/${itemId}/comments`);
+                    const data = await response.json();
+                    updateComments(data);
+                } catch (error) {
+                    console.error('Failed to fetch comments:', error);
+                }
             }
 
             function updateComments(comments) {
@@ -96,11 +107,11 @@
                     const commentElement = document.createElement('div');
                     commentElement.className = 'comment';
                     commentElement.innerHTML = `
-                <div class="comment py-2 px-3 my-2 border rounded bg-light">
+                        <div class="comment py-2 px-3 my-2 border rounded bg-light">
                             <strong>${comment.author}</strong> <small class="text-muted">${comment.createdAt}</small>
-                            <p>${comment.content }</p>
+                            <p>${comment.content}</p>
                         </div>
-            `;
+                    `;
                     commentsContainer.appendChild(commentElement);
                 });
             }
@@ -108,5 +119,4 @@
             setInterval(fetchComments, 5000);
         });
     </script>
-
 {% endblock %}
