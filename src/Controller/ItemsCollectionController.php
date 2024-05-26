@@ -13,12 +13,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/{_locale<%app.supported_locales%>}')]
 class ItemsCollectionController extends AbstractController
 {
     #[Route('/collections/create', name: 'app_collection_create', methods: [Request::METHOD_GET, Request::METHOD_POST])]
-    public function create(Request $request, EntityManagerInterface $entityManager): Response
+    public function create(Request $request,
+                           EntityManagerInterface $entityManager,
+                           TranslatorInterface $translator): Response
     {
         $form = $this->createForm(ItemsCollectionType::class, new ItemsCollection());
         $form->handleRequest($request);
@@ -31,13 +34,13 @@ class ItemsCollectionController extends AbstractController
             $entityManager->persist($collection);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Collection successfully created.');
+            $this->addFlash('success', $translator->trans('flash.collection_created'));
 
             return $this->redirectToRoute('app_main');
         }
 
         return $this->render('items_collection/form.html.twig', [
-            'action' => 'Create',
+            'action' => 'create',
             'form' => $form->createView(),
         ]);
     }

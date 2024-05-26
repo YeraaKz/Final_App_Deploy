@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/{_locale<%app.supported_locales%>}')]
 class UserController extends AbstractController
 {
     #[Route('/users/{id}/collections', name: 'app_user_collections')]

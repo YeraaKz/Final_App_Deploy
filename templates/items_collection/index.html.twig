@@ -2,14 +2,14 @@
 
 {% block body %}
     <div class="container mt-4">
-        <h1>{{ user.email }} Collections</h1>
+        <h1>{{ 'collections.title'|trans({'%email%': user.email}) }}</h1>
         <table class="table table-bordered">
             <thead>
             <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Category</th>
-                <th>Actions</th>
+                <th>{{ 'collections.name'|trans }}</th>
+                <th>{{ 'collections.description'|trans }}</th>
+                <th>{{ 'collections.category'|trans }}</th>
+                <th>{{ 'collections.actions'|trans }}</th>
             </tr>
             </thead>
             <tbody>
@@ -19,12 +19,12 @@
                     <td>{{ collection.description }}</td>
                     <td>{{ collection.category.name }}</td>
                     <td>
-                        <a href="{{ path('app_collection_edit', {id: collection.id}) }}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{{ path('app_collection_edit', {id: collection.id}) }}" class="btn btn-warning btn-sm">{{ 'collections.edit'|trans }}</a>
                         <form action="{{ path('app_collection_delete', {id: collection.id}) }}" method="post" style="display:inline-block;">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ collection.id) }}">
-                            <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this collection?');">Delete</button>
+                            <button class="btn btn-danger btn-sm" onclick="return confirm('{{ 'collections.confirm_delete'|trans }}');">{{ 'collections.delete'|trans }}</button>
                         </form>
-                        <a href="{{ path('app_item_create', {id: collection.id})}}" class="btn btn-primary btn-sm">Add Item</a>
+                        <a href="{{ path('app_item_create', {id: collection.id})}}" class="btn btn-primary btn-sm">{{ 'collections.add_item'|trans }}</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -36,4 +36,3 @@
 {% block title %}
 
 {% endblock %}
-

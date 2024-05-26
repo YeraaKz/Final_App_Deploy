@@ -33,3 +33,34 @@ register:
   email: "Email"
   password: "Password"
   register_button: "Register"
+collections:
+  collection: 'Collection'
+  title: '%email% Collections'
+  name: 'Name'
+  description: 'Description'
+  date_created: 'Date of Creation'
+  category: 'Category'
+  actions: 'Actions'
+  delete: 'Delete'
+  add_item: 'Add Item'
+  confirm_delete: 'Are you sure you want to delete this collection?'
+  create_title: 'Create Collection'
+  edit_title: 'Edit Collection'
+  custom_attributes: 'Custom Attributes'
+  add_attribute: 'Add Attribute'
+  create: 'Create'
+  edit: 'Edit'
+
+filter:
+  ascending: 'Ascending'
+  descending: 'Descending'
+  apply: 'Apply'
+
+flash:
+  collection_created: 'Collection successfully created.'
+  collection_updated: 'Collection successfully updated.'
+  collection_deleted: 'Collection successfully deleted.'
+
+error:
+  access_denied: 'Access denied'
+

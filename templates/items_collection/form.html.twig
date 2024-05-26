@@ -1,31 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Create Collection{% endblock %}
+{% block title %}{{ 'collections.create_title'|trans }}{% endblock %}
 
-{% block body  %}
+{% block body %}
     <div class="container mt-5">
-        <h1 class="mb-4">{{ action|capitalize }} Collection</h1>
+        <h1 class="mb-4">{{ ('collections.'~action)|trans}} {{ 'collections.collection'|trans }}</h1>
 
         {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': true}}) }}
         <div class="mb-3">
-            {{ form_label(form.name) }}
+            {{ form_label(form.name, 'collections.name'|trans) }}
             {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
             {{ form_errors(form.name, {'attr': {'class': 'form-text text-danger'}}) }}
         </div>
 
         <div class="mb-3">
-            {{ form_label(form.description) }}
+            {{ form_label(form.description, 'collections.description'|trans) }}
             {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
             {{ form_errors(form.description, {'attr': {'class': 'form-text text-danger'}}) }}
         </div>
 
         <div class="mb-3">
-            {{ form_label(form.category) }}
+            {{ form_label(form.category, 'collections.category'|trans) }}
             {{ form_widget(form.category, {'attr': {'class': 'form-select'}}) }}
             {{ form_errors(form.category, {'attr': {'class': 'form-text text-danger'}}) }}
         </div>
 
-        <label>Custom Attributes</label>
+        <label>{{ 'collections.custom_attributes'|trans }}</label>
 
         <div
                 id="custom-attributes-wrapper"
@@ -39,10 +39,9 @@
             {% endfor %}
         </div>
 
-        <a id="add-custom-attribute" class="btn btn-outline-secondary mb-3" href="#">Add Attribute</a>
+        <a id="add-custom-attribute" class="btn btn-outline-secondary mb-3" href="#">{{ 'collections.add_attribute'|trans }}</a>
         {{ form_rest(form) }}
-        <button type="submit" class="btn btn-primary">{{ action|capitalize }}</button>
+        <button type="submit" class="btn btn-primary">{{ ('collections.'~action)|trans }}</button>
         {{ form_end(form) }}
     </div>
-
 {% endblock %}

@@ -8,18 +8,20 @@
             <div class="form-row">
                 <div class="col">
                     <select name="sort" class="form-control">
-                        <option value="name" {% if app.request.query.get('sort') == 'name' %}selected{% endif %}>Name</option>
-                        <option value="createdAt" {% if app.request.query.get('sort') == 'createdAt' %}selected{% endif %}>Date Created</option>
+                        <option value="name" {% if app.request.query.get('sort') == 'name' %}selected{% endif %}>{{ 'collections.name'|trans }}</option>
+                        <option value="createdAt" {% if app.request.query.get('sort') == 'createdAt' %}selected{% endif %}>{{ 'collections.date_created'|trans }}</option>
                     </select>
                 </div>
                 <div class="col">
                     <select name="order" class="form-control">
-                        <option value="asc" {% if app.request.query.get('order') == 'asc' %}selected{% endif %}>Ascending</option>
-                        <option value="desc" {% if app.request.query.get('order') == 'desc' %}selected{% endif %}>Descending</option>
+                        <option value="asc" {% if app.request.query.get('order') == 'asc' %}selected{% endif %}>{{ 'filter.ascending'|trans }}</option>
+                        <option value="desc" {% if app.request.query.get('order') == 'desc' %}selected{% endif %}>{{ 'filter.descending'|trans }}</option>
                     </select>
                 </div>
                 <div class="col">
-                    <button type="submit" class="btn btn-primary">Apply</button>
+                    <button type="submit" class="btn btn-primary">{{ 'filter.apply'|trans }}</button>
+                    <a href="{{ path('app_item_create', {id: collection.id}) }}" class="btn btn-success ml-5">Add item</a>
+
                 </div>
             </div>
         </form>

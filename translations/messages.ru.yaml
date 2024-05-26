@@ -33,3 +33,35 @@ register:
   email: "Электронная почта"
   password: "Пароль"
   register_button: "Регистрация"
+collections:
+  collection: 'Коллекцию'
+  title: 'Коллекции %email%'
+  name: 'Имя'
+  description: 'Описание'
+  category: 'Категория'
+  date_created: 'Дата создания'
+  actions: 'Действия'
+  delete: 'Удалить'
+  add_item: 'Добавить предмет'
+  confirm_delete: 'Вы уверены, что хотите удалить эту коллекцию?'
+  create_title: 'Создать Коллекцию'
+  edit_title: 'Редактировать Коллекцию'
+  custom_attributes: 'Пользовательские Атрибуты'
+  add_attribute: 'Добавить Атрибут'
+  create: 'Создать'
+  edit: 'Редактировать'
+
+filter:
+  ascending: 'По Возрастания'
+  descending: 'По Убыванию'
+  apply: 'Применить'
+
+
+flash:
+  collection_created: 'Коллекция успешно создана.'
+  collection_updated: 'Коллекция успешно обновлена.'
+  collection_deleted: 'Коллекция успешно удалена.'
+
+error:
+  access_denied: 'Доступ запрещен'
+
