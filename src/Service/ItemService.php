@@ -27,7 +27,7 @@ class ItemService
         return $this->entityManager->getRepository(Tag::class)->findAll();
 
     }
-    public function assignTagsToItem(string $tags, Item $item)
+    public function assignTagsToItem(?string $tags, Item $item)
     {
         if($tags){
             $tagNames = explode(' ', $tags);

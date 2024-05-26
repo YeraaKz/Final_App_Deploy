@@ -10,15 +10,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/{_locale<%app.supported_locales%>}')]
 class MainController extends AbstractController
 {
 
-    #[Route('/test')]
-    public function test()
-    {
-        return $this->render('test.html.twig', ['action' => 'sex']);
-    }
-    #[Route('', name: 'app_main')]
+    #[Route('/', name: 'app_main')]
     public function index(EntityManagerInterface $entityManager): Response
     {
 

@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/{_locale<%app.supported_locales%>}')]
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
@@ -27,7 +28,7 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-
+            $user->setIsActive(true);
             $entityManager->persist($user);
             $entityManager->flush();
 

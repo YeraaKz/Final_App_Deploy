@@ -45,6 +45,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column]
+    private ?bool $isActive;
+
     #[ORM\OneToMany(targetEntity: ItemsCollection::class, mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $collection;
 
@@ -146,6 +149,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->likes = $likes;
     }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(?bool $isActive): void
+    {
+        $this->isActive = $isActive;
+    }
+
+
 
 
 

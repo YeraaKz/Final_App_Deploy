@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}{{ 'login.title'|trans }}{% endblock %}
 
 {% block body %}
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
-                    <h5 class="card-header">Login</h5>
+                    <h5 class="card-header">{{ 'login.header'|trans }}</h5>
                     <div class="card-body">
                         <form method="post">
                             {% if error %}
@@ -21,20 +21,20 @@
                             {% endif %}
 
                             <div class="form-group">
-                                <label for="inputEmail">Username</label>
-                                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="Enter username" required autofocus>
+                                <label for="inputEmail">{{ 'login.username'|trans }}</label>
+                                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder='{{ 'login.username_placeholder'|trans }}' required autofocus>
                             </div>
 
                             <div class="form-group">
-                                <label for="inputPassword">Password</label>
-                                <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                                <label for="inputPassword">{{ 'login.password'|trans }}</label>
+                                <input type="password" name="password" id="inputPassword" class="form-control" placeholder={{ 'login.password_placeholder'|trans }} required>
                             </div>
 
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-                            <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+                            <button class="btn btn-primary btn-block" type="submit">{{ 'login.sign_in'|trans }}</button>
                             <div class="text-center mt-3">
-                                <a href="{{ path('app_register') }}">Don't have an account? Sign Up</a>
+                                <a href="{{ path('app_register') }}">{{ 'login.no_account'|trans }}</a>
                             </div>
                         </form>
                     </div>

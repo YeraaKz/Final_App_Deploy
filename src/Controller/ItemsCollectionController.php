@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[Route('/{_locale<%app.supported_locales%>}')]
 class ItemsCollectionController extends AbstractController
 {
     #[Route('/collections/create', name: 'app_collection_create', methods: [Request::METHOD_GET, Request::METHOD_POST])]
@@ -124,6 +125,44 @@ class ItemsCollectionController extends AbstractController
 
         return $this->render('item/form.html.twig', [
             'form' => $form->createView(),
+            'action' => 'edit'
         ]);
     }
+
+    #[Route('/collections/{id}/items/{itemId?}/editItem', name: 'app_item_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('edit', subject: 'collection')]
+    public function editItem(ItemsCollection $collection, ?int $itemId, Request $request, EntityManagerInterface $entityManager, ItemService $itemService): Response
+    {
+        $item = $itemId ? $entityManager->getRepository(Item::class)->find($itemId) : new Item($collection);
+
+        $form = $this->createForm(ItemType::class, $item, [
+            'custom_attributes' => $collection->getCustomItemAttributes()->toArray(),
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $item = $form->getData();
+            if (!$itemId) {
+                $item->setCreatedAt(new \DateTime());
+            }
+            $tags = $form->get('tags')->getData();
+            $itemService->assignTagsToItem($tags, $item);
+            $itemService->persistCustomAttributes($form, $entityManager, $item, $collection);
+
+            $entityManager->persist($item);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Item ' . ($itemId ? 'updated' : 'added') . ' successfully.');
+            return $this->redirectToRoute('app_main');
+        }
+
+        return $this->render('item/form.html.twig', [
+            'form' => $form->createView(),
+            'action' => 'edit',
+            'item' => $item,
+        ]);
+    }
+
+
 }

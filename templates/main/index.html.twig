@@ -18,15 +18,15 @@
 {% block body %}
 
     <div class="container mt-5">
-        <h2 class="text-center mb-4">Recent items</h2>
+        <h2 class="text-center mb-4">{{ 'title.recent_items'|trans }}</h2>
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Collection</th>
-                    <th>Tags</th>
-                    <th>User</th>
+                    <th>{{ 'table.name'|trans }}</th>
+                    <th>{{ 'table.collection'|trans }}</th>
+                    <th>{{ 'table.tags'|trans }}</th>
+                    <th>{{ 'table.user'|trans }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -46,7 +46,7 @@
             </table>
         </div>
 
-        <h2 class="text-center mt-5 mb-4">The 5 largest collections</h2>
+        <h2 class="text-center mt-5 mb-4">{{ 'title.largest_collections'|trans }}</h2>
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>
@@ -68,7 +68,7 @@
             </table>
         </div>
 
-        <h2 class="text-center mt-5 mb-4">Most popular tags</h2>
+        <h2 class="text-center mt-5 mb-4">{{ 'title.most_popular_tags'|trans }}</h2>
         <div id="chartdiv" class="mb-5"></div>
     </div>
 {% endblock %}
