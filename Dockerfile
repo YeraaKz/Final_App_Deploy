@@ -11,6 +11,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 RUN composer require symfony/maker-bundle
 
+RUN mkdir -p /app/var/cache/prod /app/var/log
+
+
 RUN php bin/console cache:clear --env=prod --no-warmup
 RUN php bin/console cache:clear --env=prod --no-warmup
 
