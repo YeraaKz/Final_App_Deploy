@@ -37,7 +37,7 @@ class ItemsCollection
     #[Assert\NotNull()]
     private ?ItemsCollectionCategory $category = null;
 
-    #[ORM\OneToMany(targetEntity: CustomItemAttribute::class, mappedBy: 'itemCollection', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: CustomItemAttribute::class, mappedBy: 'itemCollection', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Valid()]
     private Collection $customItemAttributes;
 

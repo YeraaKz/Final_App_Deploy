@@ -26,7 +26,7 @@ class CustomItemAttribute
     #[Assert\Type(type: CustomItemAttributeDatatype::class)]
     private ?CustomItemAttributeDatatype $type = null;
 
-    #[ORM\ManyToOne(inversedBy: 'customItemAttributes')]
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'], inversedBy: 'customItemAttributes')]
     #[ORM\JoinColumn(nullable: true)]
     private ?ItemsCollection $itemCollection = null;
 

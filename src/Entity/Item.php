@@ -37,7 +37,7 @@ class Item
     #[ORM\ManyToOne(targetEntity: ItemsCollection::class, inversedBy: 'items')]
     private ?ItemsCollection $collection = null;
 
-    #[ORM\OneToMany(targetEntity: ItemAttributeValue::class, mappedBy: 'item', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: ItemAttributeValue::class, mappedBy: 'item', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $attributes;
 
     #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'items')]

@@ -40,7 +40,7 @@ class ItemsCollectionController extends AbstractController
         }
 
         return $this->render('items_collection/form.html.twig', [
-            'action' => 'create',
+            'action' => 'Create',
             'form' => $form->createView(),
         ]);
     }
@@ -128,7 +128,7 @@ class ItemsCollectionController extends AbstractController
 
         return $this->render('item/form.html.twig', [
             'form' => $form->createView(),
-            'action' => 'edit'
+            'action' => 'Add'
         ]);
     }
 
@@ -162,7 +162,7 @@ class ItemsCollectionController extends AbstractController
 
         return $this->render('item/form.html.twig', [
             'form' => $form->createView(),
-            'action' => 'edit',
+            'action' => 'Edit',
             'item' => $item,
         ]);
     }

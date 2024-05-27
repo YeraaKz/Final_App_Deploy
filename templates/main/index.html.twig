@@ -107,11 +107,19 @@
                 series.labels.template.url = "items?tag_id={id}";
 
                 var hoverState = series.labels.template.states.create("hover");
-                hoverState.properties.fill = am4core.color("#FF0000");
+
 
                 var subtitle = chart.titles.create();
 
                 var title = chart.titles.create();
+
+                const theme = localStorage.getItem('theme') || 'light';
+
+                updateChartTheme(theme);
+
+                function updateChartTheme(theme) {
+                    series.labels.template.fill = am4core.color(theme === 'dark' ? "#FFFFFF" : "#000000");
+                }
 
             });
         }

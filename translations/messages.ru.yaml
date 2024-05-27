@@ -1,3 +1,7 @@
+theme:
+  light_mode: 'Светлая Тема'
+  dark_mode: 'Темная Тема'
+
 title:
   recent_items: "Недавние предметы"
   largest_collections: "5 Крупнейших Коллекций"
@@ -34,6 +38,9 @@ register:
   password: "Пароль"
   register_button: "Регистрация"
 collections:
+  Create: 'Создать'
+  delete: 'Удалить'
+  edit: 'Изменить'
   collection: 'Коллекцию'
   title: 'Коллекции %email%'
   name: 'Имя'
@@ -41,15 +48,20 @@ collections:
   category: 'Категория'
   date_created: 'Дата создания'
   actions: 'Действия'
-  delete: 'Удалить'
   add_item: 'Добавить предмет'
   confirm_delete: 'Вы уверены, что хотите удалить эту коллекцию?'
   create_title: 'Создать Коллекцию'
   edit_title: 'Редактировать Коллекцию'
   custom_attributes: 'Пользовательские Атрибуты'
   add_attribute: 'Добавить Атрибут'
-  create: 'Создать'
-  edit: 'Редактировать'
+
+items:
+  item: 'Предмет'
+  name: 'Название'
+  description: 'Описание'
+  tags: 'Тэги'
+  Add: 'Добавить'
+  Edit: 'Изменить'
 
 filter:
   ascending: 'По Возрастания'

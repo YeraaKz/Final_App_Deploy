@@ -7,10 +7,18 @@
     {% block stylesheets %}
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <link id="theme-stylesheet" rel="stylesheet" href="">
         <style>
+            @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css');
             body{
                 padding: 0;
                 margin: 0;
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+            }
+            .main-content {
+                flex: 1;
             }
             .tag {
                 display: inline-block;
@@ -21,11 +29,62 @@
                 margin-right: 5px;
                 font-size: 14px;
             }
+            .footer-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 20px; /* Отступы справа и слева */
+            }
+
+            .footer-nav,
+            .footer-social {
+                display: flex;
+                gap: 20px; /* Отступы между ссылками */
+            }
+
+            .footer-nav a:hover,
+            .footer-social a:hover {
+                color: #007BFF; /* Цвет ссылок при наведении */
+            }
+
+            .footer-text {
+                text-align: center;
+                margin-top: 20px; /* Отступ сверху */
+            }
+
+            .social-link i {
+                font-size: 16px; /* Или другой размер, который вы предпочитаете */
+            }
+
+            #tag-list {
+
+                border: 1px solid #ccc;
+                border-top: none;
+                list-style: none;
+
+            }
+
+            #tag-list div {
+                padding: 8px 10px;
+                cursor: pointer;
+                border-bottom: 1px solid #ccc;
+            }
+
+            #tag-list div:hover {
+                background-color: #f0f0f0;
+            }
+
+            .selected{
+                background-color: #f0f0f0;
+
+            }
         </style>
     {% endblock %}
-
     {% block javascripts %}
         <script type="application/javascript" src="{{asset('js/itemsCollection-form-helper.js')}}"></script>
+        <script type="application/javascript" src="{{ asset('js/visual-theme.js') }}"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
@@ -34,10 +93,11 @@
         <script src="https://cdn.amcharts.com/lib/4/plugins/wordCloud.js"></script>
         <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
+
     {% endblock %}
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -67,6 +127,10 @@
                     <a class="dropdown-item" href="{{ path('app_main', {_locale: 'ru'}) }}">Русский</a>
                 </div>
             </li>
+            <li class="nav-item">
+                <button id="light-mode" class="btn btn-light">{{ 'theme.light_mode'|trans }}</button>
+                <button id="dark-mode" class="btn btn-dark">{{ 'theme.dark_mode'|trans }}</button>
+            </li>
             {% if app.user %}
                 <li class="nav-item">
                     <a class="nav-link" href="#">{{ app.user.email }}</a>
@@ -83,14 +147,37 @@
     </div>
 </nav>
 
-<div class="flash-message">
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">{{ message }}</div>
-    {% endfor %}
-    {% for message in app.flashes('error') %}
-        <div class="alert alert-danger">{{ message }}</div>
-    {% endfor %}
+<div class="main-content">
+    <div class="flash-message">
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% block body %}{% endblock %}
 </div>
-{% block body %}{% endblock %}
+
+<footer>
+    <div class="footer-container">
+        <div class="footer-nav">
+            <a href="#">About</a>
+            <a href="#">Blog</a>
+            <a href="#">Team</a>
+            <a href="#">Pricing</a>
+            <a href="#">Contact</a>
+            <a href="#">Terms</a>
+        </div>
+        <div class="footer-social">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+        </div>
+        <p class="footer-text">© 2021 SomeCompany, Inc. All rights reserved.</p>
+    </div>
+</footer>
+
 </body>
 </html>

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Add Item{% endblock %}
+{% block title %}{{ ('items.'~action)|trans }}{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -79,66 +79,42 @@
 
 {% block body %}
     <div class="container mt-4">
-        <h1 class="mb-4">{{ action }} Item</h1>
+        <h1 class="mb-4">{{  ('items.'~action)|trans }} {{ 'items.item'|trans }}</h1>
 
         {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': true}}) }}
 
         <div class="mb-3">
-            {{ form_row(form.name) }}
+            {{ form_label(form.name, 'items.name'|trans) }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.name, {'attr': {'class': 'form-text text-danger'}}) }}
         </div>
+
         <div class="mb-3">
-            {{ form_row(form.description) }}
+            {{ form_label(form.description, 'items.description'|trans) }}
+            {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.description, {'attr': {'class': 'form-text text-danger'}}) }}
         </div>
 
         {% for attribute in form %}
             {% if attribute.vars.name starts with 'custom_' %}
                 <div class="mb-3">
-                    {{ form_widget(attribute) }}
+                    {{ form_label(attribute) }}
                 </div>
             {% endif %}
         {% endfor %}
 
         <div class="mb-3">
-            {{ form_row(form.tags, {'attr': {'id' : 'item_tags'}}) }}
+            {{ form_label(form.tags, 'items.tags'|trans) }}
+            {{ form_widget(form.tags, {'attr': {'id' : 'item_tags'}}) }}
+            {{ form_errors(form.tags, {'attr': {'class': 'form-text text-danger'}}) }}
             <div id="tag-list"></div>
         </div>
 
 
-
         {{ form_rest(form) }}
         {{ form_errors(form) }}
-        <button type="submit" class="btn btn-success">Add</button>
+        <button type="submit" class="btn btn-success">{{ action }}</button>
 
         {{ form_end(form) }}
     </div>
-
-
-    {% block stylesheets %}
-        {{ parent() }}
-        <style>
-            #tag-list {
-
-                border: 1px solid #ccc;
-                border-top: none;
-                list-style: none;
-
-            }
-
-            #tag-list div {
-                padding: 8px 10px;
-                cursor: pointer;
-                border-bottom: 1px solid #ccc;
-            }
-
-            #tag-list div:hover {
-                background-color: #f0f0f0;
-            }
-
-            .selected{
-                background-color: #f0f0f0;
-
-            }
-        </style>
-    {% endblock %}
-
 {% endblock %}
