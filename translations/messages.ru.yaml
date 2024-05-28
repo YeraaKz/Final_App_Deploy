@@ -7,7 +7,7 @@ title:
   largest_collections: "5 Крупнейших Коллекций"
   most_popular_tags: "Самые Популярные Теги"
 table:
-  name: "Имя"
+  name: "Название"
   collection: "Коллекция"
   tags: "Теги"
   user: "Пользователь"
@@ -38,10 +38,7 @@ register:
   password: "Пароль"
   register_button: "Регистрация"
 collections:
-  Create: 'Создать'
-  delete: 'Удалить'
-  edit: 'Изменить'
-  collection: 'Коллекцию'
+  collection: 'Коллекциа'
   title: 'Коллекции %email%'
   name: 'Имя'
   description: 'Описание'
@@ -68,6 +65,9 @@ filter:
   descending: 'По Убыванию'
   apply: 'Применить'
 
+action:
+  edit: 'Изменить'
+  delete: 'Удалить'
 
 flash:
   collection_created: 'Коллекция успешно создана.'

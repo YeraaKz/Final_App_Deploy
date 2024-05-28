@@ -19,10 +19,10 @@
                     <td>{{ collection.description }}</td>
                     <td>{{ collection.category.name }}</td>
                     <td>
-                        <a href="{{ path('app_collection_edit', {id: collection.id}) }}" class="btn btn-warning btn-sm">{{ 'collections.edit'|trans }}</a>
+                        <a href="{{ path('app_collection_edit', {id: collection.id}) }}" class="btn btn-warning btn-sm">{{ 'action.edit'|trans }}</a>
                         <form action="{{ path('app_collection_delete', {id: collection.id}) }}" method="post" style="display:inline-block;">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ collection.id) }}">
-                            <button class="btn btn-danger btn-sm" onclick="return confirm('{{ 'collections.confirm_delete'|trans }}');">{{ 'collections.delete'|trans }}</button>
+                            <button class="btn btn-danger btn-sm" onclick="return confirm('{{ 'collections.confirm_delete'|trans }}');">{{ 'action.delete'|trans }}</button>
                         </form>
                         <a href="{{ path('app_item_create', {id: collection.id})}}" class="btn btn-primary btn-sm">{{ 'collections.add_item'|trans }}</a>
                     </td>

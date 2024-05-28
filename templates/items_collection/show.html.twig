@@ -2,7 +2,7 @@
 
 {% block body %}
     <div class="container mt-4">
-        <h1>{{ collection.name }} collection</h1>
+        <h1>{{ 'collections.collection'|trans}} - {{ collection.name }}</h1>
 
         <form method="get" class="mb-3">
             <div class="form-row">
@@ -20,7 +20,7 @@
                 </div>
                 <div class="col">
                     <button type="submit" class="btn btn-primary">{{ 'filter.apply'|trans }}</button>
-                    <a href="{{ path('app_item_create', {id: collection.id}) }}" class="btn btn-success ml-5">Add item</a>
+                    <a href="{{ path('app_item_create', {id: collection.id}) }}" class="btn btn-success ml-5">{{ 'items.Add'|trans }} {{ 'items.item'|trans }}</a>
 
                 </div>
             </div>
