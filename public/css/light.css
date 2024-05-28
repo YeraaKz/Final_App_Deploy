@@ -1,6 +1,5 @@
 body {
     background-color: white;
-    color: black;
     padding: 0;
     margin: 0;
     display: flex;
@@ -8,13 +7,14 @@ body {
     min-height: 100vh;
 }
 
+ul{
+    color: black;
+}
+
 .navbar {
     background-color: #f8f9fa;
 }
 
-.nav-link {
-    color: black;
-}
 
 footer {
     background-color: #F8F8F8;

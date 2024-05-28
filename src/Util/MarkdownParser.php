@@ -20,8 +20,12 @@ class MarkdownParser
     /**
      * @throws CommonMarkException
      */
-    public function parse(string $markdown): string
+    public function parse(?string $markdown): string
     {
+        if(!$markdown){
+            return "";
+        }
+
         return $this->converter->convert($markdown);
     }
 }

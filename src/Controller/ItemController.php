@@ -15,10 +15,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/{_locale<%app.supported_locales%>}')]
 class ItemController extends AbstractController
 {
-    #[Route('/items', name: 'app_items', methods: [Request::METHOD_GET])]
+    #[Route('/{_locale<%app.supported_locales%>}/items', name: 'app_items', methods: [Request::METHOD_GET])]
     public function index(EntityManagerInterface $entityManager, Request $request): Response
     {
 
@@ -37,7 +36,7 @@ class ItemController extends AbstractController
 
     }
 
-    #[Route('/items/{id}', name: 'app_item')]
+    #[Route('/{_locale<%app.supported_locales%>}/items/{id}', name: 'app_item')]
     public function show(Request $request,
                          EntityManagerInterface $entityManager,
                          MarkdownParser $markdownParser,

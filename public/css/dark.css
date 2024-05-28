@@ -1,5 +1,5 @@
 body {
-    background-color: #121212;
+    background-color: #212121;
     color: white;
     padding: 0;
     margin: 0;
@@ -8,20 +8,16 @@ body {
     min-height: 100vh;
 }
 
-.form{
-    background-color: #121212;
-}
-
-.nav-link{
-    color: white !important;
-}
-
 th {
     color: white;
 }
 
 tr {
     color: white;
+}
+
+.tag{
+    color: #111111;
 }
 
 #chartdiv {

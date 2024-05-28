@@ -48,7 +48,8 @@ collections:
   title: '%email% Collections'
   name: 'Name'
   description: 'Description'
-  date_created: 'Date of Creation'
+  tags: 'Tags'
+  created_at: 'Date of Creation'
   category: 'Category'
   actions: 'Actions'
   add_item: 'Add Item'
@@ -72,6 +73,10 @@ filter:
   ascending: 'Ascending'
   descending: 'Descending'
   apply: 'Apply'
+
+action:
+  edit: 'Edit'
+  delete: 'Delete'
 
 flash:
   collection_created: 'Collection successfully created.'
