@@ -24,6 +24,14 @@
                 flex: 1;
             }
 
+            .nav-item button{
+                position: relative;
+                top: 50%;
+                -webkit-transform: translateY(-50%);
+                -ms-transform: translateY(-50%);
+                transform: translateY(-50%);
+            }
+
             #light-mode{
                 border: 1px solid #343a40;
             }
@@ -119,7 +127,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand" href="{{ path('app_main') }}">The Collector</a>
+        <a class="navbar-brand" href="{{ path('app_main') }}">YourBrand</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -149,23 +157,26 @@
                         <a class="dropdown-item" href="{{ path('app_main', {_locale: 'ru'}) }}">Русский</a>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <button id="light-mode" class="btn btn-light btn-sm">{{ 'theme.light_mode'|trans }}</button>
-                    <button id="dark-mode" class="btn btn-dark btn-sm">{{ 'theme.dark_mode'|trans }}</button>
-                </li>
+
                 {% if app.user %}
                     <li class="nav-item dropdown">
-                        <a class="nav-link">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdownMenuLink" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{ app.user.email }}
                         </a>
-
-                        <a class="nav-link" href="{{ path('app_logout') }}">{{ 'navbar.logout'|trans }}</a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdownMenuLink">
+                            <a class="dropdown-item" href="{{ path('app_logout') }}">{{ 'navbar.logout'|trans }}</a>
+                        </div>
                     </li>
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('app_login') }}">{{ 'navbar.sign_in'|trans }}</a>
                     </li>
                 {% endif %}
+                <li class="nav-item mt-3">
+                    <button id="light-mode" class="btn btn-light btn-sm">{{ 'theme.light_mode'|trans }}</button>
+                    <button id="dark-mode" class="btn btn-dark btn-sm">{{ 'theme.dark_mode'|trans }}</button>
+                </li>
             </ul>
         </div>
     </div>

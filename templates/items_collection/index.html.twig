@@ -3,33 +3,35 @@
 {% block body %}
     <div class="container mt-4">
         <h1>{{ 'collections.title'|trans({'%email%': user.email}) }}</h1>
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th>{{ 'collections.name'|trans }}</th>
-                <th>{{ 'collections.description'|trans }}</th>
-                <th>{{ 'collections.category'|trans }}</th>
-                <th>{{ 'collections.actions'|trans }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for collection in collections %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-light">
                 <tr>
-                    <td><a href="{{ path('app_collection', {id: collection.id}) }}">{{ collection.name }}</a></td>
-                    <td>{{ collection.description }}</td>
-                    <td>{{ collection.category.name }}</td>
-                    <td>
-                        <a href="{{ path('app_collection_edit', {id: collection.id}) }}" class="btn btn-warning btn-sm">{{ 'action.edit'|trans }}</a>
-                        <form action="{{ path('app_collection_delete', {id: collection.id}) }}" method="post" style="display:inline-block;">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ collection.id) }}">
-                            <button class="btn btn-danger btn-sm" onclick="return confirm('{{ 'collections.confirm_delete'|trans }}');">{{ 'action.delete'|trans }}</button>
-                        </form>
-                        <a href="{{ path('app_item_create', {id: collection.id})}}" class="btn btn-primary btn-sm">{{ 'collections.add_item'|trans }}</a>
-                    </td>
+                    <th>{{ 'collections.name'|trans }}</th>
+                    <th>{{ 'collections.description'|trans }}</th>
+                    <th>{{ 'collections.category'|trans }}</th>
+                    <th>{{ 'collections.actions'|trans }}</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for collection in collections %}
+                    <tr>
+                        <td><a href="{{ path('app_collection', {id: collection.id}) }}">{{ collection.name }}</a></td>
+                        <td>{{ collection.description }}</td>
+                        <td>{{ collection.category.name }}</td>
+                        <td>
+                            <a href="{{ path('app_collection_edit', {id: collection.id}) }}" class="btn btn-warning btn-sm">{{ 'action.edit'|trans }}</a>
+                            <form action="{{ path('app_collection_delete', {id: collection.id}) }}" method="post" style="display:inline-block;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ collection.id) }}">
+                                <button class="btn btn-danger btn-sm" onclick="return confirm('{{ 'collections.confirm_delete'|trans }}');">{{ 'action.delete'|trans }}</button>
+                            </form>
+                            <a href="{{ path('app_item_create', {id: collection.id})}}" class="btn btn-primary btn-sm">{{ 'collections.add_item'|trans }}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 {% endblock %}
 
