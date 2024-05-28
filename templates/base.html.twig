@@ -24,7 +24,7 @@
                 flex: 1;
             }
 
-            .nav-item button{
+            .theme-buttons{
                 position: relative;
                 top: 50%;
                 -webkit-transform: translateY(-50%);
@@ -97,6 +97,9 @@
 
             }
             @media (max-width: 800px) {
+                .theme-buttons{
+                    margin-top: 12px;
+                }
                 .footer-container{
                     display: block;
                     align-items: center;
@@ -174,8 +177,10 @@
                     </li>
                 {% endif %}
                 <li class="nav-item">
-                    <button id="light-mode" class="btn btn-light btn-sm">{{ 'theme.light_mode'|trans }}</button>
-                    <button id="dark-mode" class="btn btn-dark btn-sm">{{ 'theme.dark_mode'|trans }}</button>
+                    <div class="theme-buttons">
+                        <button id="light-mode" class="btn btn-light btn-sm">{{ 'theme.light_mode'|trans }}</button>
+                        <button id="dark-mode" class="btn btn-dark btn-sm">{{ 'theme.dark_mode'|trans }}</button>
+                    </div>
                 </li>
             </ul>
         </div>

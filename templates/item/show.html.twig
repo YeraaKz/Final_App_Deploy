@@ -34,7 +34,7 @@
             </div>
         </div>
 
-        <div class="card mt-4 shadow-sm">
+        <div class="card mt-4 shadow-sm mb-3">
             <div class="card-header bg-secondary text-white">
                 <h3>Comments:</h3>
             </div>
@@ -61,6 +61,7 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const itemId = {{ item.id }};
