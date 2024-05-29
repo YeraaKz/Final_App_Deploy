@@ -16,6 +16,8 @@ class ItemsCollection
     public function __construct()
     {
         $this->customItemAttributes = new ArrayCollection();
+        $this->items = new ArrayCollection();
+        $this->updatedAt = new \DateTime();
     }
 
     #[ORM\Id]
@@ -31,6 +33,9 @@ class ItemsCollection
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Assert\NotBlank(groups: ['update'])]
     private ?string $description = null;
+
+    #[ORM\Column(type: 'datetime')]
+    private ?\DateTime $updatedAt = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id')]
@@ -156,5 +161,16 @@ class ItemsCollection
     {
         $this->user = $user;
     }
+
+    public function getUpdatedAt(): ?\DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTime $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
 
 }

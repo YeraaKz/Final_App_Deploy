@@ -110,6 +110,12 @@
             <div id="tag-list"></div>
         </div>
 
+        <div class="mb-3">
+            {{ form_label(form.imageFile, 'Item Image (optional)') }}
+            {{ form_widget(form.imageFile, {'attr': {'class': 'form-control-file'}}) }}
+            {{ form_errors(form.imageFile) }}
+        </div>
+
 
         {{ form_rest(form) }}
         {{ form_errors(form) }}

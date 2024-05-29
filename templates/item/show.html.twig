@@ -5,10 +5,13 @@
 {% block body %}
     <div class="container mt-4">
         <div class="card shadow-sm">
-            <div class="card-header bg-primary text-white">
+            <div class="card-header bg-primary text-white text-center">
                 <h2>{{ item.name }}</h2>
             </div>
-            <div class="card-body">
+            <div class="card-body text-center">
+                {% if item.itemKey %}
+                    <img src="{{ item.itemKey }}" alt="{{ item.name }}" class="img-fluid mb-3" style="max-width: 100%; height: auto;">
+                {% endif %}
                 <h3 class="font-weight-bold">Description:</h3>
                 <p class="text-muted">{{ description|raw }}</p>
                 {% for custom_attribute in item.attributes %}

@@ -19,6 +19,7 @@ class Item
         $this->tags = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->likes= new ArrayCollection();
+        $this->createdAt = new DateTime();
     }
 
     #[ORM\Id]
@@ -34,7 +35,11 @@ class Item
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $itemKey = null;
+
     #[ORM\ManyToOne(targetEntity: ItemsCollection::class, inversedBy: 'items')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?ItemsCollection $collection = null;
 
     #[ORM\OneToMany(targetEntity: ItemAttributeValue::class, mappedBy: 'item', cascade: ['persist', 'remove'], orphanRemoval: true)]
@@ -187,4 +192,15 @@ class Item
 
         return false;
     }
+
+    public function getItemKey(): ?string
+    {
+        return $this->itemKey;
+    }
+
+    public function setItemKey(?string $itemKey): void
+    {
+        $this->itemKey = $itemKey;
+    }
+
 }

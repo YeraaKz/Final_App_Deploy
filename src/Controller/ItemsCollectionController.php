@@ -7,6 +7,7 @@ use App\Entity\ItemsCollection;
 use App\Form\ItemsCollectionType;
 use App\Form\ItemType;
 use App\Service\ItemService;
+use App\Service\S3Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +19,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/{_locale<%app.supported_locales%>}')]
 class ItemsCollectionController extends AbstractController
 {
+    private $s3Service;
+
+    public function __construct(S3Service $s3Service)
+    {
+        $this->s3Service = $s3Service;
+    }
+
     #[Route('/collections/create', name: 'app_collection_create', methods: [Request::METHOD_GET, Request::METHOD_POST])]
     public function create(Request $request,
                            EntityManagerInterface $entityManager,
@@ -112,8 +120,14 @@ class ItemsCollectionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $item = $form->getData();
             $collection->setUser($this->getUser());
-            $item->setCreatedAt(new \DateTime());
             $tags = $form->get('tags')->getData();
+
+            $image = $form->get('imageFile')->getData();
+
+            if ($image) {
+                $itemKey = $this->s3Service->uploadFile($image);
+                $item->setItemKey($itemKey);
+            }
 
             $itemService->assignTagsToItem($tags, $item);
 

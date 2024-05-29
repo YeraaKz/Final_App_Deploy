@@ -7,6 +7,7 @@ use App\Enum\CustomItemAttributeDatatype;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -18,6 +19,11 @@ class ItemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('imageFile', FileType::class, [
+                'label' => 'Item Image (optional)',
+                'mapped' => false,
+                'required' => false,
+            ])
             ->add('name', TextType::class, [
                 'label' => 'Name',
                 'attr' => ['class' => 'form-control']
