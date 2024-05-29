@@ -30,9 +30,11 @@
                 {% endfor %}
             </div>
             <div class="card-footer d-flex justify-content-between align-items-center">
+                {% if app.user %}
                 <button id="like-button" class="btn">
-                    <i class="fas fa-heart{{ item.isLikedByUser(app.user) ? ' text-danger' : '' }}"></i>
+                        <i class="fas fa-heart{{ item.isLikedByUser(app.user) ? ' text-danger' : '' }}"></i>
                 </button>
+                {% endif %}
                 <div id="like-count">{{ item.likes|length }} likes</div>
             </div>
         </div>
