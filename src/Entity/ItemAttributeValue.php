@@ -16,7 +16,8 @@ class ItemAttributeValue
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: CustomItemAttribute::class)]
+    #[ORM\ManyToOne(targetEntity: CustomItemAttribute::class, inversedBy: 'itemAttributeValue')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?CustomItemAttribute $attribute = null;
 
     #[ORM\ManyToOne(targetEntity: Item::class, inversedBy: 'attributes')]

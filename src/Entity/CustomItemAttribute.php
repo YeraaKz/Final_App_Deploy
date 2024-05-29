@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Enum\CustomItemAttributeDatatype;
 use App\Repository\CustomItemAttributeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -11,6 +13,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: '`custom_item_attributes`')]
 class CustomItemAttribute
 {
+    public function __construct()
+    {
+        $this->itemAttributeValue = new ArrayCollection();
+    }
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -29,6 +36,13 @@ class CustomItemAttribute
     #[ORM\ManyToOne(inversedBy: 'customItemAttributes')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     private ?ItemsCollection $itemCollection = null;
+
+    #[ORM\OneToMany(
+        targetEntity: ItemAttributeValue::class,
+        mappedBy: 'attribute',
+        cascade: ['remove'],
+        orphanRemoval: true)]
+    private Collection $itemAttributeValue;
 
     public function getId(): ?int
     {
@@ -64,4 +78,16 @@ class CustomItemAttribute
     {
         $this->itemCollection = $itemCollection;
     }
+
+    public function getItemAttributeValue(): Collection
+    {
+        return $this->itemAttributeValue;
+    }
+
+    public function setItemAttributeValue(Collection $itemAttributeValue): void
+    {
+        $this->itemAttributeValue = $itemAttributeValue;
+    }
+
+
 }
