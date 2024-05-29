@@ -77,7 +77,7 @@
             const commentInput = document.getElementById('comment-content');
             const submitButton = document.getElementById('submit-comment');
             const commentsContainer = document.getElementById('comments');
-
+            let lastFetchedCommentId = 0;
 
             submitButton.addEventListener('click', async function() {
                 const commentContent = commentInput.value.trim();
@@ -117,7 +117,10 @@
                 try {
                     const response = await fetch(`/api/items/${itemId}/comments`);
                     const data = await response.json();
-                    updateComments(data);
+                    if (data.length > 0 && data[data.length - 1].id !== lastFetchedCommentId) {
+                        updateComments(data);
+                        lastFetchedCommentId = data[data.length - 1].id;
+                    }
                 } catch (error) {
                     console.error('Failed to fetch comments:', error);
                 }
