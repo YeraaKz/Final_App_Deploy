@@ -95,7 +95,40 @@ class ItemController extends AbstractController
         ]);
     }
 
-    #[Route('/api/items/{id}/comments')]
+    #[Route('/api/items/{id}/comments', name: 'api_add_comment', methods: [Request::METHOD_POST])]
+    public function addComment(Request $request, EntityManagerInterface $entityManager, $id): JsonResponse
+    {
+        $item = $entityManager->getRepository(Item::class)->find($id);
+
+        if (!$item) {
+            return new JsonResponse(['error' => 'Item not found'], 404);
+        }
+
+        $data = json_decode($request->getContent(), true);
+        $commentContent = $data['content'] ?? '';
+
+        if (empty($commentContent)) {
+            return new JsonResponse(['error' => 'Content cannot be empty'], 400);
+        }
+
+        $comment = new Comment();
+        $comment->setContent($commentContent);
+        $comment->setUser($this->getUser());
+        $comment->setItem($item);
+        $comment->setCreatedAt(new \DateTime());
+
+        $entityManager->persist($comment);
+        $entityManager->flush();
+
+        return new JsonResponse([
+            'id' => $comment->getId(),
+            'author' => $comment->getUser()->getEmail(),
+            'createdAt' => $comment->getCreatedAt()->format('Y-m-d H:i:s'),
+            'content' => $comment->getContent()
+        ], 201);
+    }
+
+    #[Route('/api/items/{id}/comments', name: 'api_get_comments', methods: [Request::METHOD_GET])]
     public function getItemComment(EntityManagerInterface $entityManager, int $id): JsonResponse
     {
         $comments = $entityManager->getRepository(Comment::class)->findByCreatedDateAsc($id);
@@ -110,4 +143,6 @@ class ItemController extends AbstractController
 
         return $this->json($responseData);
     }
+
+
 }

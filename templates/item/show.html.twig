@@ -54,12 +54,16 @@
                     {% endfor %}
                 </div>
 
-                {{ form_start(form) }}
+
                 <div class="form-group">
-                    {{ form_widget(form) }}
-                    <button type="submit" class="btn btn-primary">Comment</button>
+                    <textarea id="comment-content" class="form-control" placeholder="Write your comment here..."></textarea>
+                    {% if app.user %}
+                        <button id="submit-comment" class="btn btn-primary mt-2">Comment</button>
+                    {% else %}
+                        <button class="btn btn-primary mt-3"><a href="{{ path('app_login') }}">Comment</a></button>
+                    {% endif %}
                 </div>
-                {{ form_end(form) }}
+
             </div>
         </div>
     </div>
@@ -70,30 +74,44 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const itemId = {{ item.id }};
-            const likeButton = document.getElementById('like-button');
-            const likeCount = document.getElementById('like-count');
-            const heartIcon = likeButton.querySelector('i');
+            const commentInput = document.getElementById('comment-content');
+            const submitButton = document.getElementById('submit-comment');
+            const commentsContainer = document.getElementById('comments');
 
-            likeButton.addEventListener('click', async function() {
-                try {
-                    const response = await fetch(`/api/items/${itemId}/like`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
+
+            submitButton.addEventListener('click', async function() {
+                const commentContent = commentInput.value.trim();
+                if (commentContent) {
+                    try {
+                        const response = await fetch(`/api/items/${itemId}/comments`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ content: commentContent })
+                        });
+                        if (response.ok) {
+                            const newComment = await response.json();
+                            addCommentToDOM(newComment);
+                            commentInput.value = '';
+                        } else {
+                            console.error('Failed to post comment:', response.statusText);
                         }
-                    });
-                    const data = await response.json();
-                    if (data.liked) {
-                        heartIcon.classList.add('text-danger');
-                        likeCount.textContent = `${parseInt(likeCount.textContent) + 1} Likes`;
-                    } else {
-                        heartIcon.classList.remove('text-danger');
-                        likeCount.textContent = `${parseInt(likeCount.textContent) - 1} Likes`;
+                    } catch (error) {
+                        console.error('Failed to post comment:', error);
                     }
-                } catch (error) {
-                    console.error('Error:', error);
                 }
             });
+
+            function addCommentToDOM(comment) {
+                const commentElement = document.createElement('div');
+                commentElement.className = 'comment py-2 px-3 my-2 border rounded bg-light';
+                commentElement.innerHTML = `
+                    <strong>${comment.author}</strong> <small class="text-muted">${new Date(comment.createdAt).toLocaleString()}</small>
+                    <p>${comment.content}</p>
+                `;
+                commentsContainer.appendChild(commentElement);
+            }
 
             async function fetchComments() {
                 try {
@@ -106,19 +124,9 @@
             }
 
             function updateComments(comments) {
-                const commentsContainer = document.getElementById('comments');
-                commentsContainer.innerHTML = ''; // Очистка текущих комментариев
-
+                commentsContainer.innerHTML = '';
                 comments.forEach(comment => {
-                    const commentElement = document.createElement('div');
-                    commentElement.className = 'comment';
-                    commentElement.innerHTML = `
-                        <div class="comment py-2 px-3 my-2 border rounded bg-light">
-                            <strong>${comment.author}</strong> <small class="text-muted">${comment.createdAt}</small>
-                            <p>${comment.content}</p>
-                        </div>
-                    `;
-                    commentsContainer.appendChild(commentElement);
+                    addCommentToDOM(comment);
                 });
             }
 
@@ -126,3 +134,4 @@
         });
     </script>
 {% endblock %}
+

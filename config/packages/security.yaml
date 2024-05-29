@@ -33,8 +33,10 @@ security:
     access_control:
         - {path: '^/admin', roles: ROLE_ADMIN}
         - { path: '^/collections/create', roles: ROLE_USER }
-        - { path: '^/collections/{id}/addItem', roles: [ROLE_USER, ROLE_ADMIN] }
-        - { path: '^/collections/{id}/edit', roles: [ROLE_USER, ROLE_ADMIN] }
+        - { path: '^/collections/{id}/addItem', roles: ROLE_USER }
+        - { path: '^/collections/{id}/edit', roles: ROLE_USER }
+        - { path: '^/api/items/{id}/like', roles: ROLE_USER}
+        - { path: '^/api/items/{id}/comments', roles: ROLE_USER}
         - { path: '^/users/{id}', roles: ROLE_USER }
 
 when@test:
