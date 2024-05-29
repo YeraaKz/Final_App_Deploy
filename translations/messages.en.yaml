@@ -67,6 +67,9 @@ items:
   tags: 'Тэги'
   Add: "Add"
   Edit: 'Edit'
+  comments: 'Comments'
+  comment_submit: 'Comment'
+  likes: 'Likes'
 
 
 filter:

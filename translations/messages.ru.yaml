@@ -60,6 +60,9 @@ items:
   tags: 'Тэги'
   Add: 'Добавить'
   Edit: 'Изменить'
+  comments: 'Комментарии'
+  comment_submit: 'Комментировать'
+  likes: 'Лайков'
 
 filter:
   ascending: 'По Возрастания'
