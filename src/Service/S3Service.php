@@ -14,14 +14,14 @@ class S3Service
     {
         $this->s3Client = new S3Client([
             'version' => 'latest',
-            'region' => $_ENV['AWS_REGION'],
+            'region' => getenv('AWS_REGION'),
             'credentials' => [
-                'key'    => $_ENV['AWS_ACCESS_KEY_ID'],
-                'secret' => $_ENV['AWS_SECRET_ACCESS_KEY'],
+                'key'    => getenv('AWS_ACCESS_KEY_ID'),
+                'secret' => getenv('AWS_SECRET_ACCESS_KEY'),
             ],
         ]);
 
-        $this->bucketName = $_ENV['AWS_BUCKET_NAME'];
+        $this->bucketName = getenv('AWS_BUCKET_NAME');
     }
 
     public function uploadFile(UploadedFile $file): string
