@@ -9,7 +9,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 RUN composer require symfony/maker-bundle
 
-RUN chown -R www-data:www-data /var/www && chmod -R 755 /var/www
+RUN chown -R www-data:www-data app/cache
+RUN chown -R www-data:www-data app/log
 
 RUN php bin/console cache:clear --env=prod && \
     php bin/console cache:warmup --env=prod
