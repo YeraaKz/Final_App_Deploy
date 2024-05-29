@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Item;
 use App\Entity\ItemsCollection;
 use App\Entity\ItemsCollectionCategory;
 use App\Entity\User;
@@ -35,5 +36,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Collections');
         yield MenuItem::linkToCrud('Collections', 'fa fa-list', ItemsCollection::class);
         yield MenuItem::linkToCrud('Categories', 'fa fa-medium', ItemsCollectionCategory::class);
+        yield MenuItem::linkToCrud('Item', 'fa fa-item', Item::class);
     }
 }
