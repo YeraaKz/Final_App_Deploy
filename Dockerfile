@@ -9,6 +9,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 RUN composer require symfony/maker-bundle
 
+RUN chmod +x bin/console
+
 RUN bin/console assets:install
 
 ENV WEB_DOCUMENT_ROOT=/app/public
