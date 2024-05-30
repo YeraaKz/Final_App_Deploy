@@ -47,6 +47,6 @@ class ItemsCollectionVoter extends Voter
 
     private function canEdit(ItemsCollection $collection, User $user): bool
     {
-        return $user === $collection->getUser();
+        return $user === $collection->getUser() || in_array('ROLE_ADMIN', $user->getRoles());
     }
 }
